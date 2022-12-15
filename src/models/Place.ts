@@ -1,7 +1,7 @@
 import {Model, DataTypes} from 'sequelize'
 import { sequelize } from '../config/database'
 
-import { User } from './UserTemplate'
+import { User } from './User'
 
 export class Place extends Model
 {
