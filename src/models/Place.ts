@@ -2,6 +2,8 @@ import {Model, DataTypes} from 'sequelize'
 import { sequelize } from '../config/database'
 
 import { User } from './User'
+import { Accessibility } from './Accessibility'
+import { Category } from './Category'
 
 export class Place extends Model
 {
