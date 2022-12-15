@@ -15,7 +15,10 @@ Accessibility.init({
     },
     label: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            max: 50,
+        }
     },
 },
 {
