@@ -1,12 +1,11 @@
-# NODEJS API TEMPLATE
+# GLIMPSE BACKEND IN NODEJS
+## Installation
+### Prerequisites
+- NodeJS
+- MariaDB
 
-Template for nodeJs API
-
-## LAUNCH
-To start the project:
-```
-$ npm run dev
-```
-URL: [127.0.0.1:7000](127.0.0.1:7000)
-
----
+### Installation
+- Clone the repository
+- Run `npm install` to install all dependencies
+- Create a database in MariaDB
+- Copy the `.env.example` file to `.env` and fill in the database credentials
