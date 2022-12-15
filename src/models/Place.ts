@@ -71,7 +71,7 @@ Place.init({
 },
 {
     sequelize,
-    tableName: "Model",
+    tableName: "Places",
     createdAt: "created_at",
 }
 );
