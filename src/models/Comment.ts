@@ -1,8 +1,9 @@
-import {Model, DataTypes} from 'sequelize'
-import { sequelize } from '../config/database'
+import {Model, DataTypes} from 'sequelize';
+import { sequelize } from '../config/database';
 
-import { User } from './User'
+import { User } from './User';
 import { Place } from './Place';
+import { PictureComment } from './PictureComment';
 
 export class Comment extends Model
 {
@@ -21,14 +22,14 @@ Comment.init({
     },
     comment: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
     },
     usersId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: User,
-            key: 'id',
+            key: 'id'
         }
     },
     placesId: {
@@ -36,8 +37,7 @@ Comment.init({
         allowNull: false,
         references: {
             model: Place,
-            key: 'id',
-
+            key: 'id'
         }
     },
 },
@@ -47,3 +47,6 @@ Comment.init({
     createdAt: "created_at"
 }
 );
+
+PictureComment.belongsTo(Comment, {foreignKey: 'commentsId'});
+Comment.hasMany(PictureComment, {foreignKey: 'commentsId'});

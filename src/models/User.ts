@@ -2,6 +2,9 @@ import {Model, DataTypes} from 'sequelize';
 import { sequelize } from '../config/database';
 
 import { Permission } from './Permission'
+import { Place } from './Place';
+import { Favorite } from './Favorite';
+import { Comment } from './Comment';
 
 export class User extends Model
 {
@@ -57,3 +60,6 @@ User.init({
     timestamps: false
 }
 );
+
+// Comment.belongsTo(User, {foreignKey: 'usersId'});
+// User.hasMany(Comment, {foreignKey: 'usersId'});

@@ -1,9 +1,12 @@
-import {Model, DataTypes} from 'sequelize'
-import { sequelize } from '../config/database'
+import {Model, DataTypes} from 'sequelize';
+import { sequelize } from '../config/database';
 
-import { User } from './User'
-import { Accessibility } from './Accessibility'
-import { Category } from './Category'
+import { User } from './User';
+import { Accessibility } from './Accessibility';
+import { Category } from './Category';
+import { Comment } from './Comment';
+import { PicturePlace } from './PicturePlace';
+import { Favorite } from './Favorite';
 
 export class Place extends Model
 {
@@ -26,32 +29,36 @@ Place.init({
         autoIncrement: true,
         primaryKey: true
     },
+    title: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     description: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: true
     },
     history: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: true
     },
     latitude: {
         type: DataTypes.FLOAT,
-        allowNull: false,
+        allowNull: false
     },
     longitude: {
         type: DataTypes.FLOAT,
-        allowNull: false,
+        allowNull: false
     },
     keyword: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: true
     },
     categoriesId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
             model: Category,
-            key: 'id',
+            key: 'id'
         }
     },
     accessibilitiesId: {
@@ -59,7 +66,7 @@ Place.init({
         allowNull: false,
         references: {
             model: Accessibility,
-            key: 'id',
+            key: 'id'
         }
     },
     usersId: {
@@ -67,23 +74,30 @@ Place.init({
         allowNull: false,
         references: {
             model: User,
-            key: 'id',
+            key: 'id'
         }
     }
 },
 {
     sequelize,
-    tableName: "Places",
+    tableName: "places",
     createdAt: "created_at",
+    updatedAt: false
 }
 );
 
 
-Place.belongsTo(Category, {foreignKey: "idCategories"});
-Category.hasOne(Place, {foreignKey: "idCategories"});
+PicturePlace.belongsTo(Place, {foreignKey: 'placesId'});
+Place.hasMany(PicturePlace, {foreignKey: 'placesId'});
 
-Place.belongsTo(Accessibility, {foreignKey: "idAccessibilities"});
-Accessibility.hasOne(Place, {foreignKey: "idAccessibilities"});
+Place.belongsTo(Category, {foreignKey: "categoriesId"});
+Category.hasOne(Place, {foreignKey: "categoriesId"});
 
-Place.belongsTo(User, {foreignKey: "idUsers"});
-User.hasOne(Place, {foreignKey: "idUsers"});
+Place.belongsTo(Accessibility, {foreignKey: "accessibilitiesId"});
+Accessibility.hasOne(Place, {foreignKey: "accessibilitiesId"});
+
+Place.belongsTo(User, {foreignKey: "usersId"});
+User.hasOne(Place, {foreignKey: "usersId"});
+
+Comment.belongsTo(Place, {foreignKey: "placesId"});
+Place.hasMany(Comment, {foreignKey: "placesId"});
