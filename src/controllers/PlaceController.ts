@@ -21,6 +21,7 @@ export class PlaceController extends CrudController{
                 },
                 {
                     model: User,
+                    as: 'postedBy',
                     attributes: ['id', 'pseudonym', 'avatar']
                 },
                 {
@@ -40,6 +41,11 @@ export class PlaceController extends CrudController{
                             attributes: ['url']
                         }
                     ]
+                },
+                {
+                    model: User,
+                    as: 'FavoriteUsers',
+                    attributes: ['id']
                 }
             ]
         })
@@ -61,7 +67,8 @@ export class PlaceController extends CrudController{
                 },
                 {
                     model: User,
-                    attributes: ['id', 'pseudonym']
+                    as: 'postedBy',
+                    attributes: ['id', 'pseudonym', 'avatar']
                 },
                 {
                     model: Category,
@@ -70,6 +77,11 @@ export class PlaceController extends CrudController{
                 {
                     model: Accessibility,
                     attributes: ['label']
+                },
+                {
+                    model: User,
+                    as: 'FavoriteUsers',
+                    attributes: ['id']
                 }
             ]
         })

@@ -96,8 +96,21 @@ Category.hasOne(Place, {foreignKey: "categoriesId"});
 Place.belongsTo(Accessibility, {foreignKey: "accessibilitiesId"});
 Accessibility.hasOne(Place, {foreignKey: "accessibilitiesId"});
 
-Place.belongsTo(User, {foreignKey: "usersId"});
-User.hasOne(Place, {foreignKey: "usersId"});
+Place.belongsTo(User, {as:'postedBy', foreignKey: "usersId"});
+// TODO : Make User.hasMany
+User.hasOne(Place, {as: 'posted', foreignKey: "usersId"});
 
 Comment.belongsTo(Place, {foreignKey: "placesId"});
 Place.hasMany(Comment, {foreignKey: "placesId"});
+
+Place.belongsToMany(User, {
+    through: Favorite,
+    as: 'FavoriteUsers',
+    foreignKey: 'placesId'
+});
+
+User.belongsToMany(Place, {
+    through: Favorite,
+    as: 'FavoritePlaces',
+    foreignKey: 'usersId'
+});
