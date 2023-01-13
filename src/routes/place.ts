@@ -9,3 +9,4 @@ export const routerPlace = express.Router({
 
 routerPlace.route('/place/show/:id').get(placeController.read);
 routerPlace.route('/place/listall').get(placeController.listAll);
+routerPlace.route('/place/count/:id').get(placeController.count);

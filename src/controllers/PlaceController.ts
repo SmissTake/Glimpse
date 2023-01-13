@@ -8,6 +8,7 @@ import { Accessibility } from "../models/Accessibility";
 import { Comment } from "../models/Comment";
 import { PictureComment } from "../models/PictureComment";
 import { Favorite } from "../models/Favorite";
+import sequelize from "sequelize";
 
 export class PlaceController extends CrudController{
 
@@ -46,7 +47,7 @@ export class PlaceController extends CrudController{
                     model: User,
                     as: 'FavoriteUsers',
                     attributes: ['id']
-                }
+                },
             ]
         })
         .then((place) => res.json(place))
@@ -81,7 +82,7 @@ export class PlaceController extends CrudController{
                 {
                     model: User,
                     as: 'FavoriteUsers',
-                    attributes: ['id']
+                    attributes: [[sequelize.fn('COUNT', 'id'), 'items']]
                 }
             ]
         })
@@ -90,5 +91,21 @@ export class PlaceController extends CrudController{
             console.log(error)
             res.send('no places found');
         });
+    }
+
+    public count(req: Request, res: Response): void {
+        Place.count({
+            include: [
+                {
+                  model: User,
+                  as: 'FavoriteUsers',
+                  where: { id: req.params.id }
+                },
+                {
+                  model: Category
+                }
+              ],
+              group: ['Category.id']
+            })
     }
 }
