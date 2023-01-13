@@ -24,7 +24,7 @@ app.get('/place/show/:id', routerPlace);
 app.get('/place/listall', routerPlace);
 app.get('/place/count/:id', routerPlace);
 app.post('/place/create', routerPlace);
-
+app.put('/place/update/:id', routerPlace);
 app.delete('/place/delete/:id', routerPlace);
 
 app.listen(PORT, () =>{

@@ -141,4 +141,26 @@ export class PlaceController extends CrudController{
         }
         );
     }
+
+    // Update a place
+    public update(req: Request, res: Response): void {
+        let id = req.params.id;
+        let placeUpdate = req.body;
+
+        Place.findByPk(id)
+        .then(place => {
+            if (place !== null){
+                place.set(placeUpdate);
+                place.save();
+                res.json({"message":"Place updated"});
+            }
+            else{
+                res.json({"message":"no place with id : $(id)"});
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.json({"message":"Update failed"});
+        })
+    }
 }
