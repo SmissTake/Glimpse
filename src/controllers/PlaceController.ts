@@ -108,4 +108,22 @@ export class PlaceController extends CrudController{
               group: ['Category.id']
             })
     }
+
+    // Create a place
+    public create(req: Request, res: Response): void{
+        Place.create(req.body, {
+            include: [
+                {
+                    model: PicturePlace
+                    }
+                ]
+            }
+        )
+        .then((place) => res.json(place))
+        .catch(error => {
+            console.log(error);
+            res.send('no place created');
+        }
+        );
+    }
 }

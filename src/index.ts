@@ -23,6 +23,7 @@ app.use(express.json());
 app.get('/place/show/:id', routerPlace);
 app.get('/place/listall', routerPlace);
 app.get('/place/count/:id', routerPlace);
+app.get('/place/create', routerPlace);
 
 app.listen(PORT, () =>{
     console.log(`Server running on port ${PORT}`);
