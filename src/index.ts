@@ -25,6 +25,8 @@ app.get('/place/listall', routerPlace);
 app.get('/place/count/:id', routerPlace);
 app.post('/place/create', routerPlace);
 
+app.delete('/place/delete/:id', routerPlace);
+
 app.listen(PORT, () =>{
     console.log(`Server running on port ${PORT}`);
 });

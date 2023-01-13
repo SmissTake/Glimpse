@@ -126,4 +126,19 @@ export class PlaceController extends CrudController{
         }
         );
     }
+
+    // Delete a place
+    public delete(req: Request, res: Response): void{
+        Place.destroy({
+            where: {
+                id: req.params.id
+            }
+        })
+        .then((place) => res.json(place))
+        .catch(error => {
+            console.log(error);
+            res.send('no place deleted');
+        }
+        );
+    }
 }
