@@ -23,6 +23,7 @@ app.use(express.json());
 app.get('/place/show/:id', routerPlace);
 app.get('/place/listall', routerPlace);
 app.get('/place/count/:id', routerPlace);
+app.get('/place/search', routerPlace);
 app.post('/place/create', routerPlace);
 app.put('/place/update/:id', routerPlace);
 app.delete('/place/delete/:id', routerPlace);

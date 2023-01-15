@@ -8,7 +8,7 @@ import { Accessibility } from "../models/Accessibility";
 import { Comment } from "../models/Comment";
 import { PictureComment } from "../models/PictureComment";
 import { Favorite } from "../models/Favorite";
-import sequelize from "sequelize";
+import sequelize, { Op } from "sequelize";
 
 export class PlaceController extends CrudController{
 
@@ -126,6 +126,35 @@ export class PlaceController extends CrudController{
         }
         );
     }
+
+// Search a place with parameters query, limit and offset
+public search(req: Request, res: Response): void {
+    const searchQuery = req.body.query || "";
+    const limit = parseInt(req.body.limit) || 20;
+    const offset = parseInt(req.body.offset) || 0;
+    if (typeof searchQuery !== "string" || !searchQuery.length || isNaN(limit) || isNaN(offset)) {
+        res.status(400).json({ message: "Invalid limit or offset value, or no query" });
+    }
+    Place.findAll({
+        limit: limit,
+        offset: offset,
+        where: {
+            [Op.or]: [
+                { title: { [Op.like]: `%${searchQuery}%` } },
+                { description: { [Op.like]: `%${searchQuery}%` } },
+                { history: { [Op.like]: `%${searchQuery}%` } },
+                { keyword: { [Op.like]: `%${searchQuery}%` } }
+            ]
+        }
+    })
+    .then((places) => {
+        res.json(places);
+    })
+    .catch(error => {
+        console.log(error);
+        res.status(500).json({ message: "Error searching places" });
+    });
+}
 
     // Delete a place
     public delete(req: Request, res: Response): void{
