@@ -30,6 +30,7 @@ app.put('/place/update/:id', routerPlace);
 app.delete('/place/delete/:id', routerPlace);
 
 app.get('/user/show/:id', routerUser);
+app.get('/user/listall', routerUser);
 
 app.listen(PORT, () =>{
     console.log(`Server running on port ${PORT}`);

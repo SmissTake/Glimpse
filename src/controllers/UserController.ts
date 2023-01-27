@@ -63,4 +63,16 @@ export class UserController extends CrudController{
             res.send('no user found');
         });
     }
+
+    // Get id, pseudonym, avatar of all users
+    public listAll(req: Request, res: Response): void{
+        User.findAll({ 
+            attributes: ['id', 'pseudonym', 'avatar']
+        })
+        .then((users) => res.json(users))
+        .catch(error => {
+            console.log(error);
+            res.send('no users found');
+        });
+    }
 }
