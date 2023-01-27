@@ -5,6 +5,7 @@ import cors, { CorsOptions } from 'cors';
 import express from 'express';
 import { PORT } from './config/constants';
 import {routerPlace} from './routes/place';
+import {routerUser} from './routes/user';
 
 const app = express();
 const allowOrigins = [`http://localhost:${PORT}`];
@@ -27,6 +28,8 @@ app.get('/place/search', routerPlace);
 app.post('/place/create', routerPlace);
 app.put('/place/update/:id', routerPlace);
 app.delete('/place/delete/:id', routerPlace);
+
+app.get('/user/show/:id', routerUser);
 
 app.listen(PORT, () =>{
     console.log(`Server running on port ${PORT}`);
