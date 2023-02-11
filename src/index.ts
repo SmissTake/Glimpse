@@ -36,6 +36,7 @@ app.get('/user/search', routerUser);
 app.put('/user/update/:id', routerUser);
 
 app.get('/category/listall', routerCategory);
+app.get('/category/listplaces/:id', routerCategory);
 
 app.listen(PORT, () =>{
     console.log(`Server running on port ${PORT}`);

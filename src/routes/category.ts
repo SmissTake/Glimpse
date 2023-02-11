@@ -8,3 +8,4 @@ export const routerCategory = express.Router({
 });
 
 routerCategory.route('/category/listall').get(categoryController.listAll);
+routerCategory.route('/category/listplaces/:id').get(categoryController.listPlaces);

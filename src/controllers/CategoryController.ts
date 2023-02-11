@@ -17,4 +17,31 @@ export class CategoryController extends CrudController {
                 res.send('no categories found');
             });
     }
+
+    // Get all places by category id
+    public listPlaces(req: Request, res: Response): void {
+        Place.findAll({
+            include: [
+                {
+                    model: PicturePlace,
+                    attributes: ['url'],
+                    limit: 1
+                },
+                {
+                    model: Category,
+                    attributes: ['label'],
+                    where: { id: req.params.id }
+                },
+                {
+                    model: Accessibility,
+                    attributes: ['label']
+                }
+            ]
+        })
+            .then((places) => res.json(places))
+            .catch(error => {
+                console.log(error);
+                res.send('no places found');
+            });
+    }
 }
