@@ -10,6 +10,7 @@ export class User extends Model
 {
     declare id: number;
     declare pseudonym: string;
+    declare biography: string;
     declare mail: string;
     declare password: string;
     declare avatar: string;
@@ -27,6 +28,13 @@ User.init({
         allowNull: false,
         validate: {
             max: 50,
+        }
+    },
+    biography: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+            max: 255,
         }
     },
     mail: {
