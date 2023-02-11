@@ -5,6 +5,7 @@ import { Place } from "../models/Place";
 import { PicturePlace } from "../models/PicturePlace";
 import { Category } from "../models/Category";
 import { Accessibility } from "../models/Accessibility";
+import sequelize, { Op } from "sequelize";
 
 
 export class UserController extends CrudController{
@@ -85,6 +86,34 @@ export class UserController extends CrudController{
         .catch(error => {
             console.log(error);
             res.send('user not updated');
+        });
+    }
+
+    // Search a user with parameters query, limit and offset
+    public search(req: Request, res: Response): void{
+        const searchQuery = req.body.query || "";
+        const limit = parseInt(req.body.limit) || 20;
+        const offset = parseInt(req.body.offset) || 0;
+        if (typeof searchQuery !== "string" || !searchQuery.length || isNaN(limit) || isNaN(offset)) {
+            res.status(400).json({ message: "Invalid limit or offset value, or no query" });
+        }
+        User.findAll({
+            attributes: ['id', 'pseudonym', 'avatar'],
+            where: {
+                pseudonym: {
+                    [Op.like]: '%' + searchQuery + '%'
+                },
+                biography: {
+                    [Op.like]: '%' + searchQuery + '%'
+                }
+            },
+            limit: limit,
+            offset: offset,
+        })
+        .then((users) => res.json(users))
+        .catch(error => {
+            console.log(error);
+            res.send('no users found');
         });
     }
 }
