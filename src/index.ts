@@ -31,6 +31,7 @@ app.delete('/place/delete/:id', routerPlace);
 
 app.get('/user/show/:id', routerUser);
 app.get('/user/listall', routerUser);
+app.put('/user/update/:id', routerUser);
 
 app.listen(PORT, () =>{
     console.log(`Server running on port ${PORT}`);

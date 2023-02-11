@@ -75,4 +75,16 @@ export class UserController extends CrudController{
             res.send('no users found');
         });
     }
+
+    // Update a user by id
+    public update(req: Request, res: Response): void{
+        User.update(req.body, {
+            where: { id: req.params.id }
+        })
+        .then(() => res.send('user updated'))
+        .catch(error => {
+            console.log(error);
+            res.send('user not updated');
+        });
+    }
 }
