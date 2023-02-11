@@ -14,8 +14,7 @@ export class Place extends Model
     declare title: string;
     declare description: string;
     declare history: string;
-    declare latitude: number;
-    declare longitude: number;
+    declare town: string;
     declare keyword: string;
     declare categoriesId: number;
     declare accessibilitiesId: number;
@@ -41,13 +40,9 @@ Place.init({
         type: DataTypes.STRING,
         allowNull: true
     },
-    latitude: {
-        type: DataTypes.FLOAT,
-        allowNull: false
-    },
-    longitude: {
-        type: DataTypes.FLOAT,
-        allowNull: false
+    town: {
+        type: DataTypes.STRING,
+        allowNull: true
     },
     keyword: {
         type: DataTypes.STRING,
