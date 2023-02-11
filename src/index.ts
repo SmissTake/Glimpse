@@ -6,6 +6,7 @@ import express from 'express';
 import { PORT } from './config/constants';
 import {routerPlace} from './routes/place';
 import {routerUser} from './routes/user';
+import { routerCategory } from './routes/category';
 
 const app = express();
 const allowOrigins = [`http://localhost:${PORT}`];
@@ -33,6 +34,8 @@ app.get('/user/show/:id', routerUser);
 app.get('/user/listall', routerUser);
 app.get('/user/search', routerUser);
 app.put('/user/update/:id', routerUser);
+
+app.get('/category/listall', routerCategory);
 
 app.listen(PORT, () =>{
     console.log(`Server running on port ${PORT}`);
