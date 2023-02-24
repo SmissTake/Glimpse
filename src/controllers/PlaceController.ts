@@ -9,6 +9,7 @@ import { Comment } from "../models/Comment";
 import { PictureComment } from "../models/PictureComment";
 import { Favorite } from "../models/Favorite";
 import sequelize, { Op } from "sequelize";
+import multer, { FileFilterCallback } from "multer";
 
 export class PlaceController extends CrudController{
 
@@ -109,22 +110,55 @@ export class PlaceController extends CrudController{
             })
     }
 
-    // Create a place
-    public create(req: Request, res: Response): void{
-        Place.create(req.body, {
-            include: [
-                {
-                    model: PicturePlace
-                    }
-                ]
+    // Create a place using multer to upload pictures
+    public create(req: Request, res: Response): void {
+        const storage = multer.diskStorage({
+            destination: function (req, file, cb) {
+                cb(null, 'uploads/places');
+            },
+            filename: function (req, file, cb) {
+                cb(null, Date.now() + file.originalname);
             }
-        )
-        .then((place) => res.json(place))
-        .catch(error => {
-            console.log(error);
-            res.send('no place created');
-        }
-        );
+        });
+        const fileFilter = (req: Request, file: Express.Multer.File, cb: FileFilterCallback) => {
+            if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+                cb(null, true);
+            } else {
+                cb(null, false);
+            }
+        };
+        const upload = multer({
+            storage: storage,
+            limits: {
+                fileSize: 1024 * 1024 * 5
+            },
+            fileFilter: fileFilter
+        }).array('pictures', 5);
+        upload(req, res, (err) => {
+            if (err) {
+                console.log(err);
+                res.status(500).json({ message: "Error uploading pictures" });
+            } else {
+                const place = req.body;
+                Place.create(place)
+                .then((place) => {
+                    const pictures: Express.Multer.File[] = req.files as Express.Multer.File[];
+                    if(pictures){
+                        pictures.forEach((picture : Express.Multer.File) => {
+                            PicturePlace.create({
+                                url: picture.path,
+                                placesId: place.id
+                            });
+                        });
+                    }
+                    res.json(place);
+                })
+                .catch(error => {
+                    console.log(error);
+                    res.status(500).json({ message: "Error creating place" });
+                });
+            }
+        });
     }
 
 // Search a place with parameters query, limit and offset
