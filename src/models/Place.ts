@@ -15,6 +15,7 @@ export class Place extends Model
     declare description: string;
     declare history: string;
     declare town: string;
+    declare is_active: boolean;
     declare keyword: string;
     declare categoriesId: number;
     declare accessibilitiesId: number;
@@ -43,6 +44,11 @@ Place.init({
     town: {
         type: DataTypes.STRING,
         allowNull: true
+    },
+    is_active: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
     },
     keyword: {
         type: DataTypes.STRING,
