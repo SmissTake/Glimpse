@@ -34,6 +34,7 @@ export class UserController extends CrudController{
                             attributes: ['label']
                         }
                     ],
+                    where: { is_active: true },
                     through: { attributes: [] },
                 },
                 {
@@ -55,6 +56,7 @@ export class UserController extends CrudController{
                             attributes: ['label']
                         }
                     ],
+                    where: { is_active: true },
                 }
             ]
         })

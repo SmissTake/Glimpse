@@ -28,7 +28,8 @@ export class PlaceController extends CrudController{
                 },
                 {
                     model: Category,
-                    attributes: ['label']
+                    attributes: ['label'],
+                    where: { is_active: true },
                 },
                 {
                     model: Accessibility,
@@ -49,7 +50,7 @@ export class PlaceController extends CrudController{
                     as: 'FavoriteUsers',
                     attributes: ['id']
                 },
-            ]
+            ],
         })
         .then((place) => res.json(place))
         .catch(error => {
@@ -74,7 +75,8 @@ export class PlaceController extends CrudController{
                 },
                 {
                     model: Category,
-                    attributes: ['label']
+                    attributes: ['label'],
+                    where: { is_active: true },
                 },
                 {
                     model: Accessibility,
@@ -82,10 +84,10 @@ export class PlaceController extends CrudController{
                 },
                 {
                     model: User,
-                    as: 'FavoriteUsers',
-                    attributes: [[sequelize.fn('COUNT', 'id'), 'items']]
+                    as: 'FavoriteUsers'
                 }
-            ]
+            ],
+            where: { is_active: true },
         })
         .then((place) => res.json(place))
         .catch(error => {
@@ -94,6 +96,7 @@ export class PlaceController extends CrudController{
         });
     }
 
+    // Count active places by category
     public count(req: Request, res: Response): void {
         Place.count({
             include: [
@@ -106,6 +109,7 @@ export class PlaceController extends CrudController{
                   model: Category
                 }
               ],
+              where: { is_active: true },
               group: ['Category.id']
             })
     }
@@ -178,7 +182,8 @@ public search(req: Request, res: Response): void {
                 { description: { [Op.like]: `%${searchQuery}%` } },
                 { history: { [Op.like]: `%${searchQuery}%` } },
                 { keyword: { [Op.like]: `%${searchQuery}%` } }
-            ]
+            ],
+            where: { is_active: true },
         }
     })
     .then((places) => {
