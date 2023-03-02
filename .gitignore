@@ -3,3 +3,5 @@ dist/
 .vscode/
 *.key
 .env
+.adminjs/
+package-lock.json
