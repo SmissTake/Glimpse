@@ -1,10 +1,25 @@
 import express from 'express';
 import AdminJSExpress from '@adminjs/express';
+import * as AdminJSSequelize from '@adminjs/sequelize'
 import AdminJS from 'adminjs';
 import MySQLStore from 'express-mysql-session';
-import session from 'express-session'
+import { Category } from '../models/Category';
+import { Place } from '../models/Place';
+import { User } from '../models/User';
+import { PicturePlace } from '../models/PicturePlace';
+import { Comment } from '../models/Comment';
+import { PictureComment } from '../models/PictureComment';
+import { Accessibility } from '../models/Accessibility';
+import { Permission } from '../models/Permission';
 
-const admin = new AdminJS({})
+AdminJS.registerAdapter({
+  Resource: AdminJSSequelize.Resource,
+  Database: AdminJSSequelize.Database,
+})
+
+const admin = new AdminJS({
+  resources: [Category, Place, User, PicturePlace, Comment, PictureComment, Accessibility, Permission],
+})
 
 const DEFAULT_ADMIN = {
     email: process.env.ADMIN_USERNAME,
