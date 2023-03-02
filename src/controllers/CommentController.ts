@@ -21,4 +21,22 @@ export class CommentController extends CrudController {
             res.send('no comment found');
         });
     }
+
+    //Get all comments by place id
+    public readAllByPlaceId (req: Request, res: Response): void {
+        Comment.findAll({
+            where: { placesId: req.params.id },
+            include: [
+                {
+                    model: PictureComment,
+                    attributes: ['url']
+                }
+            ]
+        })
+        .then((comments) => res.json(comments))
+        .catch(error => {
+            console.log(error);
+            res.send('no comments found');
+        });
+    }
 }
