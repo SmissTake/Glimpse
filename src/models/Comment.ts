@@ -44,7 +44,8 @@ Comment.init({
 {
     sequelize,
     tableName: "comments",
-    createdAt: "created_at"
+    createdAt: "created_at",
+    updatedAt: false
 }
 );
 
