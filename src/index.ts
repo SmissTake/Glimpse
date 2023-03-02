@@ -7,6 +7,7 @@ import { PORT } from './config/constants';
 import {routerPlace} from './routes/place';
 import {routerUser} from './routes/user';
 import { routerCategory } from './routes/category';
+import { routerComment } from './routes/comment';
 import { routerAdmin } from './routes/admin';
 
 const app = express();
@@ -40,6 +41,8 @@ app.put('/user/update/:id', routerUser);
 
 app.get('/category/listall', routerCategory);
 app.get('/category/listplaces/:id', routerCategory);
+
+app.get('/comment/show/:id', routerComment);
 
 app.use('/admin', routerAdmin);
 
