@@ -45,6 +45,7 @@ app.get('/category/listplaces/:id', routerCategory);
 app.get('/comment/show/:id', routerComment);
 app.get('/comment/place/:id', routerComment);
 app.post('/comment/create', routerComment);
+app.delete('/comment/delete/:id', routerComment);
 
 app.use('/admin', routerAdmin);
 
