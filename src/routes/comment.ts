@@ -9,3 +9,4 @@ export const routerComment = express.Router({
 
 routerComment.route('/comment/show/:id').get(commentController.read);
 routerComment.route('/comment/place/:id').get(commentController.readAllByPlaceId);
+routerComment.route('/comment/create').post(commentController.create);
