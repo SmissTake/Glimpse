@@ -7,6 +7,7 @@ import { PORT } from './config/constants';
 import {routerPlace} from './routes/place';
 import {routerUser} from './routes/user';
 import { routerCategory } from './routes/category';
+import { routerAdmin } from './routes/admin';
 
 const app = express();
 const allowOrigins = [`http://localhost:${PORT}`];
@@ -18,6 +19,8 @@ const options: cors.CorsOptions = {
 // if(process.env.NODE_ENV !== 'production'){
 //     console.log('Le token JWT :', generateToken("tanguy", "gwion.tanguy@my-digital-school.org", "Administrateur"));
 // }
+
+
 
 app.use(cors())
 app.use(express.json());
@@ -37,6 +40,8 @@ app.put('/user/update/:id', routerUser);
 
 app.get('/category/listall', routerCategory);
 app.get('/category/listplaces/:id', routerCategory);
+
+app.use('/admin', routerAdmin);
 
 app.listen(PORT, () =>{
     console.log(`Server running on port ${PORT}`);
