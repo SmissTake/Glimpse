@@ -42,6 +42,11 @@ export class PlaceController extends CrudController{
                         {
                             model: PictureComment,
                             attributes: ['url']
+                        },
+                        {
+                            model: User,
+                            as: 'postedBy',
+                            attributes: ['id', 'pseudonym', 'avatar']
                         }
                     ]
                 },
@@ -84,7 +89,8 @@ export class PlaceController extends CrudController{
                 },
                 {
                     model: User,
-                    as: 'FavoriteUsers'
+                    as: 'FavoriteUsers',
+                    attributes: ['id']
                 }
             ],
             where: { is_active: true },

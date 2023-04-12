@@ -51,3 +51,12 @@ Comment.init({
 
 PictureComment.belongsTo(Comment, {foreignKey: 'commentsId'});
 Comment.hasMany(PictureComment, {foreignKey: 'commentsId'});
+
+User.hasMany(Comment, {
+    foreignKey: 'usersId',
+    as: 'postedComments'
+});
+Comment.belongsTo(User, {
+    foreignKey: 'usersId',
+    as: 'postedBy'
+});
