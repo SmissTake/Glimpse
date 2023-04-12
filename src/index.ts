@@ -9,6 +9,7 @@ import {routerUser} from './routes/user';
 import { routerCategory } from './routes/category';
 import { routerComment } from './routes/comment';
 import { routerAdmin } from './routes/admin';
+import { routerAccessibility } from './routes/accessibility';
 
 const app = express();
 const allowOrigins = [`http://localhost:${PORT}`];
@@ -41,6 +42,8 @@ app.put('/user/update/:id', routerUser);
 
 app.get('/category/listall', routerCategory);
 app.get('/category/listplaces/:id', routerCategory);
+
+app.get('/accessibility/listall', routerAccessibility);
 
 app.get('/comment/show/:id', routerComment);
 app.get('/comment/place/:id', routerComment);
