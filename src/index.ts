@@ -11,6 +11,7 @@ import { routerComment } from './routes/comment';
 import { routerAdmin } from './routes/admin';
 import { routerAccessibility } from './routes/accessibility';
 import { routerFavorite } from './routes/favorite';
+import { routerVisit } from './routes/visit';
 
 const app = express();
 const allowOrigins = [`http://192.168.1.49:${PORT}`];
@@ -38,6 +39,9 @@ app.delete('/place/delete/:id', routerPlace);
 
 app.post('/favorite', routerFavorite);
 app.delete('/unfavorite', routerFavorite);
+
+app.post('/visit', routerVisit);
+app.delete('/unvisit', routerVisit);
 
 app.get('/user/show/:id', routerUser);
 app.get('/user/listall', routerUser);
