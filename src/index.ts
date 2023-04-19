@@ -12,6 +12,7 @@ import { routerAdmin } from './routes/admin';
 import { routerAccessibility } from './routes/accessibility';
 import { routerFavorite } from './routes/favorite';
 import { routerVisit } from './routes/visit';
+import { routerFollow } from './routes/follow';
 
 const app = express();
 const allowOrigins = [`http://192.168.1.49:${PORT}`];
@@ -47,6 +48,9 @@ app.get('/user/show/:id', routerUser);
 app.get('/user/listall', routerUser);
 app.get('/user/search', routerUser);
 app.put('/user/update/:id', routerUser);
+
+app.post('/follow', routerFollow);
+app.delete('/unfollow', routerFollow);
 
 app.get('/category/listall', routerCategory);
 app.get('/category/listplaces/:id', routerCategory);
