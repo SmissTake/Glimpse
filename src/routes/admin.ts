@@ -11,6 +11,9 @@ import { Comment } from '../models/Comment';
 import { PictureComment } from '../models/PictureComment';
 import { Accessibility } from '../models/Accessibility';
 import { Permission } from '../models/Permission';
+import { Favorite } from '../models/Favorite';
+import { Follow } from '../models/Follow';
+import { Visite } from '../models/Visite';
 
 AdminJS.registerAdapter({
   Resource: AdminJSSequelize.Resource,
@@ -18,7 +21,7 @@ AdminJS.registerAdapter({
 })
 
 const admin = new AdminJS({
-  resources: [Category, Place, User, PicturePlace, Comment, PictureComment, Accessibility, Permission],
+  resources: [Category, Place, User, PicturePlace, Comment, PictureComment, Accessibility, Permission, Favorite, Follow, Visite],
 })
 
 const DEFAULT_ADMIN = {
