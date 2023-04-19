@@ -10,9 +10,10 @@ import { routerCategory } from './routes/category';
 import { routerComment } from './routes/comment';
 import { routerAdmin } from './routes/admin';
 import { routerAccessibility } from './routes/accessibility';
+import { routerFavorite } from './routes/favorite';
 
 const app = express();
-const allowOrigins = [`http://localhost:${PORT}`];
+const allowOrigins = [`http://192.168.1.49:${PORT}`];
 
 const options: cors.CorsOptions = {
     origin: allowOrigins
@@ -34,6 +35,9 @@ app.get('/place/search', routerPlace);
 app.post('/place/create', routerPlace);
 app.put('/place/update/:id', routerPlace);
 app.delete('/place/delete/:id', routerPlace);
+
+app.post('/favorite', routerFavorite);
+app.delete('/unfavorite', routerFavorite);
 
 app.get('/user/show/:id', routerUser);
 app.get('/user/listall', routerUser);
