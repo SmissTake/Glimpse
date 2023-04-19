@@ -7,6 +7,7 @@ import { Category } from './Category';
 import { Comment } from './Comment';
 import { PicturePlace } from './PicturePlace';
 import { Favorite } from './Favorite';
+import { Visite } from './Visite';
 
 export class Place extends Model
 {
@@ -113,4 +114,16 @@ User.belongsToMany(Place, {
     through: Favorite,
     as: 'FavoritePlaces',
     foreignKey: 'usersId'
+});
+
+Place.belongsToMany(User, {
+    through: Visite,
+    as: 'VisiteUsers',
+    foreignKey: 'placesId'
+});
+
+User.belongsToMany(Place, {
+    through: Visite,
+    as: 'Visited',
+    foreignKey: 'usersId',
 });

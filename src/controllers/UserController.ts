@@ -35,7 +35,7 @@ export class UserController extends CrudController{
                         }
                     ],
                     where: { is_active: true },
-                    through: { attributes: [] },
+                    required: false,
                 },
                 {
                     model: Place,
@@ -57,7 +57,40 @@ export class UserController extends CrudController{
                         }
                     ],
                     where: { is_active: true },
-                }
+                    required: false,
+                },
+                {
+                    model: Place,
+                    as: 'Visited',
+                    attributes: ['id', 'title', 'created_at'],
+                    include: [
+                        {
+                            model: PicturePlace,
+                            attributes: ['url'],
+                            limit: 1
+                        },
+                        {
+                            model: Category,
+                            attributes: ['label']
+                        },
+                        {
+                            model: Accessibility,
+                            attributes: ['label']
+                        }
+                    ],
+                    where: { is_active: true },
+                    required: false,
+                },
+                {
+                    model: User,
+                    as: 'Followers',
+                    attributes: ['id', 'pseudonym', 'avatar'],
+                },
+                {
+                    model: User,
+                    as: 'Followings',
+                    attributes: ['id', 'pseudonym', 'avatar'],
+                },
             ]
         })
         .then((user) => res.json(user))

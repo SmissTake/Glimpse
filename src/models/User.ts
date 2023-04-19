@@ -5,6 +5,7 @@ import { Permission } from './Permission'
 import { Place } from './Place';
 import { Favorite } from './Favorite';
 import { Comment } from './Comment';
+import { Follow } from './Follow';
 
 export class User extends Model
 {
@@ -69,5 +70,15 @@ User.init({
 }
 );
 
-// Comment.belongsTo(User, {foreignKey: 'usersId'});
-// User.hasMany(Comment, {foreignKey: 'usersId'});
+User.belongsToMany(User, {
+    through: Follow,
+    as: 'Followers',
+    foreignKey: 'followingId',
+    otherKey: 'followerId'
+});
+User.belongsToMany(User, { 
+    through: Follow,
+    as: 'Followings',
+    foreignKey: 'followerId',
+    otherKey: 'followingId'
+});
