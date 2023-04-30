@@ -210,17 +210,50 @@ public search(req: Request, res: Response): void {
 
     // Delete a place
     public delete(req: Request, res: Response): void{
-        Place.destroy({
-            where: {
-                id: req.params.id
-            }
+        // Place.destroy({
+        //     where: {
+        //         id: req.params.id
+        //     }
+        // })
+        // .then((place) => res.json(place))
+        // .catch(error => {
+        //     console.log(error);
+        //     res.send('no place deleted');
+        // }
+        // );
+        Place.findByPk(req.params.id)
+        .then((place) => {
+            const token = req.headers.authorization?.split(' ')[1]; // assuming the token is in the Authorization header
+            validateToken(token!)
+            .then(decoded => {
+                const usersId = decoded.usersId;
+                if (place?.usersId !== usersId){
+                    res.json({message:"Forbidden"});
+                }
+                else if(place){
+                    PicturePlace.findAll({
+                        where: { placesId: place.id }
+                    })
+                    .then((pictures) => {
+                        pictures.forEach((picture) => {
+                            picture.destroy();
+                        })
+                        place.destroy();
+                        res.status(200).json({message:"Place deleted"});
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        res.status(500).json({message:"Error deleting place"});
+                    });
+                } else {
+                    res.status(404).json({message:"Place not found"});
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                res.status(500).json({message:"Error deleting place"});
+            });
         })
-        .then((place) => res.json(place))
-        .catch(error => {
-            console.log(error);
-            res.send('no place deleted');
-        }
-        );
     }
 
     // Update a place
