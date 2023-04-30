@@ -103,24 +103,32 @@ export class CommentController extends CrudController {
     public delete (req: Request, res: Response): void {
         Comment.findByPk(req.params.id)
         .then((comment) => {
-            if(comment){
-                PictureComment.findAll({
-                    where: { commentsId: comment.id }
-                })
-                .then((pictures) => {
-                    pictures.forEach((picture) => {
-                        picture.destroy();
+            const token = req.headers.authorization?.split(' ')[1]; // assuming the token is in the Authorization header
+            validateToken(token!)
+            .then(decoded => {
+                const usersId = decoded.usersId;
+                if(comment?.usersId !== usersId){
+                    res.status(403).json({ message: "Forbidden" });
+                }
+                else if(comment){
+                    PictureComment.findAll({
+                        where: { commentsId: comment.id }
+                    })
+                    .then((pictures) => {
+                        pictures.forEach((picture) => {
+                            picture.destroy();
+                        });
+                        comment.destroy();
+                        res.json(comment);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        res.status(500).json({ message: "Error deleting pictures" });
                     });
-                    comment.destroy();
-                    res.json(comment);
-                })
-                .catch(error => {
-                    console.log(error);
-                    res.status(500).json({ message: "Error deleting pictures" });
-                });
-            } else {
-                res.status(404).json({ message: "Comment not found" });
-            }
+                } else {
+                    res.status(404).json({ message: "Comment not found" });
+                }
+            })
         })
         .catch(error => {
             console.log(error);
