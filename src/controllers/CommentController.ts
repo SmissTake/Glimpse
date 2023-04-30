@@ -3,6 +3,7 @@ import { CrudController } from "./CrudController";
 import { Comment } from "../models/Comment";
 import { PictureComment } from "../models/PictureComment";
 import multer, { FileFilterCallback } from "multer";
+import { validateToken } from "../authenticate/jwt";
 
 export class CommentController extends CrudController {
 
@@ -70,24 +71,30 @@ export class CommentController extends CrudController {
                 console.log(err);
                 res.status(500).json({ message: "Error uploading pictures" });
             } else {
-                const comment = req.body;
-                Comment.create(comment)
-                .then((comment) => {
-                    const pictures: Express.Multer.File[] = req.files as Express.Multer.File[];
-                    if(pictures){
-                        pictures.forEach((picture : Express.Multer.File) => {
-                            PictureComment.create({
-                                url: picture.path,
-                                commentsId: comment.id
+                const token = req.headers.authorization.split(' ')[1]; // assuming the token is in the Authorization header
+                validateToken(token)
+                .then(decoded => {
+                    const usersId = decoded.usersId;
+                    const comment = req.body;
+                    comment.usersId = usersId;
+                    Comment.create(comment)
+                    .then((comment) => {
+                        const pictures: Express.Multer.File[] = req.files as Express.Multer.File[];
+                        if(pictures){
+                            pictures.forEach((picture : Express.Multer.File) => {
+                                PictureComment.create({
+                                    url: picture.path,
+                                    commentsId: comment.id
+                                });
                             });
-                        });
-                    }
-                    res.json(comment);
+                        }
+                        res.json(comment);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        res.status(500).json({ message: "Error creating comment" });
+                    });
                 })
-                .catch(error => {
-                    console.log(error);
-                    res.status(500).json({ message: "Error creating comment" });
-                });
             }
         });
     }
