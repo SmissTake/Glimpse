@@ -210,17 +210,6 @@ public search(req: Request, res: Response): void {
 
     // Delete a place
     public delete(req: Request, res: Response): void{
-        // Place.destroy({
-        //     where: {
-        //         id: req.params.id
-        //     }
-        // })
-        // .then((place) => res.json(place))
-        // .catch(error => {
-        //     console.log(error);
-        //     res.send('no place deleted');
-        // }
-        // );
         Place.findByPk(req.params.id)
         .then((place) => {
             const token = req.headers.authorization?.split(' ')[1]; // assuming the token is in the Authorization header
@@ -260,6 +249,7 @@ public search(req: Request, res: Response): void {
     public update(req: Request, res: Response): void {
         let id = req.params.id;
         let placeUpdate = req.body;
+
 
         Place.findByPk(id)
         .then(place => {
