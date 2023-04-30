@@ -10,6 +10,7 @@ import { PictureComment } from "../models/PictureComment";
 import { Favorite } from "../models/Favorite";
 import sequelize, { Op } from "sequelize";
 import multer, { FileFilterCallback } from "multer";
+import { validateToken } from "../authenticate/jwt";
 
 export class PlaceController extends CrudController{
 
@@ -149,24 +150,30 @@ export class PlaceController extends CrudController{
                 console.log(err);
                 res.status(500).json({ message: "Error uploading pictures" });
             } else {
-                const place = req.body;
-                Place.create(place)
-                .then((place) => {
-                    const pictures: Express.Multer.File[] = req.files as Express.Multer.File[];
-                    if(pictures){
-                        pictures.forEach((picture : Express.Multer.File) => {
-                            PicturePlace.create({
-                                url: picture.path,
-                                placesId: place.id
+                const token = req.headers.authorization?.split(' ')[1]; // assuming the token is in the Authorization header
+                validateToken(token!)
+                .then(decoded => {
+                    const usersId = decoded.usersId;
+                    const place = req.body;
+                    place.usersId = usersId;
+                    Place.create(place)
+                    .then((place) => {
+                        const pictures: Express.Multer.File[] = req.files as Express.Multer.File[];
+                        if(pictures){
+                            pictures.forEach((picture : Express.Multer.File) => {
+                                PicturePlace.create({
+                                    url: picture.path,
+                                    placesId: place.id
+                                });
                             });
-                        });
-                    }
-                    res.json(place);
+                        }
+                        res.json(place);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        res.status(500).json({ message: "Error creating place" });
+                    });
                 })
-                .catch(error => {
-                    console.log(error);
-                    res.status(500).json({ message: "Error creating place" });
-                });
             }
         });
     }
