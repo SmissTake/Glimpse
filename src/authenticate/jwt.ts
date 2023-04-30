@@ -27,7 +27,7 @@ export function generateToken(userName:String, userMail:String, role:String) {
 
     // generation du token JWT
     // Note: la passphrase devrait être dans le .env
-    return sign(payload, { key: privateKey, passphrase: process.env.keypp! }, signInOptions);
+    return sign(payload, { key: privateKey, passphrase: process.env.PASSPHRASE! }, signInOptions);
 }
 
 interface TokenPayload {
