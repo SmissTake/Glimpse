@@ -249,14 +249,24 @@ public search(req: Request, res: Response): void {
     public update(req: Request, res: Response): void {
         let id = req.params.id;
         let placeUpdate = req.body;
+        const token = req.headers.authorization?.split(' ')[1]; // assuming the token is in the Authorization header
 
 
         Place.findByPk(id)
         .then(place => {
             if (place !== null){
-                place.set(placeUpdate);
-                place.save();
-                res.json({"message":"Place updated"});
+                validateToken(token!)
+                .then(decoded => {
+                    const usersId = decoded.usersId;
+                    if (place?.usersId !== usersId){
+                        res.status(403).json({ message: "Forbidden" });
+                    }
+                    else{
+                        place.set(placeUpdate);
+                        place.save();
+                        res.json({"message":"Place updated"});
+                    }
+                })
             }
             else{
                 res.json({"message":"no place with id : $(id)"});
