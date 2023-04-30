@@ -71,8 +71,8 @@ export class CommentController extends CrudController {
                 console.log(err);
                 res.status(500).json({ message: "Error uploading pictures" });
             } else {
-                const token = req.headers.authorization.split(' ')[1]; // assuming the token is in the Authorization header
-                validateToken(token)
+                const token = req.headers.authorization?.split(' ')[1]; // assuming the token is in the Authorization header
+                validateToken(token!)
                 .then(decoded => {
                     const usersId = decoded.usersId;
                     const comment = req.body;
