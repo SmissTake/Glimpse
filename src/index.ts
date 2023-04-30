@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 import cors, { CorsOptions } from 'cors';
-//import { generateToken } from './authenticate/jwt';
+import { generateToken } from './authenticate/jwt';
 import express from 'express';
 import { PORT } from './config/constants';
 import {routerPlace} from './routes/place';
@@ -13,6 +13,7 @@ import { routerAccessibility } from './routes/accessibility';
 import { routerFavorite } from './routes/favorite';
 import { routerVisit } from './routes/visit';
 import { routerFollow } from './routes/follow';
+import { routerAuthenticate } from './routes/authenticate';
 
 const app = express();
 const allowOrigins = [`http://192.168.1.49:${PORT}`];
@@ -21,9 +22,9 @@ const options: cors.CorsOptions = {
     origin: allowOrigins
 };
 
-// if(process.env.NODE_ENV !== 'production'){
-//     console.log('Le token JWT :', generateToken("tanguy", "gwion.tanguy@my-digital-school.org", "Administrateur"));
-// }
+if(process.env.NODE_ENV !== 'production'){
+    console.log('Le token JWT :', generateToken(1, "User1", "user-1@gmail.com", "Administrateur"));
+}
 
 
 
@@ -63,6 +64,9 @@ app.post('/comment/create', routerComment);
 app.delete('/comment/delete/:id', routerComment);
 
 app.use('/admin', routerAdmin);
+
+app.post('/user/signin', routerAuthenticate);
+app.post('/user/login', routerAuthenticate);
 
 app.use('/uploads', express.static('uploads'));
 
