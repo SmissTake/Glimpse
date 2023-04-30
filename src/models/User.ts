@@ -82,3 +82,5 @@ User.belongsToMany(User, {
     foreignKey: 'followerId',
     otherKey: 'followingId'
 });
+
+User.belongsTo(Permission, {foreignKey: "permissionsId"});
