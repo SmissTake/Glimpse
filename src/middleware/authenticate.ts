@@ -41,6 +41,7 @@ export const authorize = (allowedAccessTypes: string[]) => async (req: Request, 
             return res.status(UNAUTHORIZED).json({ message: 'No enough privileges to access endpoint' });
         }
 
+        req.usersId = decodedToken.usersId;
         next();
     } catch (error: any) {
         if (error.name === 'TokenExpiredError') {
