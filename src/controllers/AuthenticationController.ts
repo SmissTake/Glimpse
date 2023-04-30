@@ -3,7 +3,7 @@ import status from "http-status";
 import { generateToken } from "../authenticate/jwt";
 import { BCRYPT_ROUND } from "../config/constants";
 import { Permission } from "../models/Permission";
-import { User } from "../models/UserTemplate";
+import { User } from "../models/User";
 import { CrudController } from "./CrudController";
 
 export class AuthenticateController extends CrudController {
@@ -15,10 +15,10 @@ export class AuthenticateController extends CrudController {
             .then(hashedPassword =>{
                 userInfo.password = hashedPassword;
 
-                User.create(userInfo, {fields:['firstname', 'lastname', 'password', 'mail']})
+                User.create(userInfo, {fields:['pseudonym', 'mail', 'password']})
                 .then(user =>{
-                    let name = user.lastname;
-                    let msg = `L'utilisateur ${name} a bien été ajouté`;
+                    let pseudonym = user.pseudonym;
+                    let msg = `L'utilisateur ${pseudonym} a bien été ajouté`;
                     res.json({"message": msg});
                 })
                 .catch(err => {
@@ -49,12 +49,12 @@ export class AuthenticateController extends CrudController {
             res.status(status.UNAUTHORIZED).json('Invalid credentials 2');
         }
 
-        const permission = await Permission.findByPk(user.idPermissions);
+        const permission = await Permission.findByPk(user.permissionsId);
         if(permission === null){
             res.status(status.UNAUTHORIZED).json('Invalid credentials 3');
             return;
         }
         
-        res.status(status.OK).json({'token':generateToken(user.lastname, user.mail, permission.role)});
+        res.status(status.OK).json({'token':generateToken(user.id, user.pseudonym, user.mail, permission.role)});
     }
 }

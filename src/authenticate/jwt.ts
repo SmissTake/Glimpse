@@ -5,10 +5,11 @@ import * as path from 'path';
 /**
  * création du token JWT
  */
-export function generateToken(userName:String, userMail:String, role:String) {
+export function generateToken(userId:number, pseudonym:String, userMail:String, role:String) {
     // Les informations que l'on souhaite enregistrer dans le token
     const payload = {
-        name: userName,
+        userId: userId,
+        name: pseudonym,
         mail: userMail,
         // Les accès à l'API que l'on souhaite ouvrir à ce partenaire
         accessTypes: [
