@@ -2,6 +2,14 @@ import { Request, Response, NextFunction } from 'express';
 import { validateToken } from '../authenticate/jwt';
 import status, { UNAUTHORIZED } from 'http-status';
 
+declare global {
+    namespace Express {
+      interface Request {
+        usersId?: number;
+      }
+    }
+  }
+
 /**
  * middleware to check whether user has access to a specific endpoint
  *

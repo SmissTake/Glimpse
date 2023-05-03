@@ -11,7 +11,8 @@
     "build:pub": "openssl rsa -in private.pem -outform PEM -pubout -out public.pem",
     "build:mvk": "mv private.pem private.key && mv public.pem public.key",
     "generate:keys": "npm run build:pk && npm run build:pub && npm run build:mvk",
-    "dev": "concurrently \"npm:build:dev\" \"npm:start:dev\""
+    "dev": "concurrently \"npm:build:dev\" \"npm:start:dev\"",
+    "test": "jest"
   },
   "keywords": [],
   "author": "",
