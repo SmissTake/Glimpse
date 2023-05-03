@@ -11,7 +11,10 @@ export class AuthenticateController extends CrudController {
     //Inscription
     public signin(req: Request, res: Response):void{
         let userInfo = req.body!;
-        hash(userInfo.password, BCRYPT_ROUND)
+        if (userInfo.password === undefined || userInfo.mail === undefined || userInfo.pseudonym === undefined) {
+            res.json({"message":"Insertion impossible"});
+        } else {
+            hash(userInfo.password, BCRYPT_ROUND)
             .then(hashedPassword =>{
                 userInfo.password = hashedPassword;
 
@@ -30,6 +33,7 @@ export class AuthenticateController extends CrudController {
                 console.log(err);
                 res.json({"message":"Insertion impossible"});
             });
+        }
     }
 
     //Authentification
@@ -37,24 +41,31 @@ export class AuthenticateController extends CrudController {
         const plainPassword = req.body!.password;
         const mail = req.body!.mail;
 
-        const user = await User.findOne({ where: {mail:mail}});
-
-        if(user === null){
-            res.status(status.UNAUTHORIZED).json('Invalid credentials 1');
-            return;
+        if (plainPassword === undefined || mail === undefined) {
+            res.status(status.UNAUTHORIZED).json('Invalid credentials 0');
+        } else {
+            const user = await User.findOne({ where: {mail:mail}});
+    
+            if(user === null){
+                res.status(status.UNAUTHORIZED).json('Invalid credentials 1');
+                return;
+            }
+    
+            const bMatch = await compare(plainPassword, user!.password);
+            if(!bMatch){
+                res.status(status.UNAUTHORIZED).json('Invalid credentials 2');
+            }
+    
+            const permission = await Permission.findByPk(user.permissionsId);
+            if(permission === null){
+                res.status(status.UNAUTHORIZED).json('Invalid credentials 3');
+                return;
+            }
+            
+            res.status(status.OK).json({
+                'id':user.id,
+                'token':generateToken(user.id, user.pseudonym, user.mail, permission.role)
+            });
         }
-
-        const bMatch = await compare(plainPassword, user!.password);
-        if(!bMatch){
-            res.status(status.UNAUTHORIZED).json('Invalid credentials 2');
-        }
-
-        const permission = await Permission.findByPk(user.permissionsId);
-        if(permission === null){
-            res.status(status.UNAUTHORIZED).json('Invalid credentials 3');
-            return;
-        }
-        
-        res.status(status.OK).json({'token':generateToken(user.id, user.pseudonym, user.mail, permission.role)});
     }
 }
