@@ -20,7 +20,6 @@ export const authorize = (allowedAccessTypes: string[]) => async (req: Request, 
         if (jwt.toLowerCase().startsWith('bearer')) {
             jwt = jwt.slice('bearer'.length).trim();
         }
-        console.log('avant validate', jwt);
 
         if (!jwt) {
             return res.status(status.UNAUTHORIZED).json({ message: 'Invalid token ' });
