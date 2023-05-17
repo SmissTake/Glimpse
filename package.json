@@ -49,6 +49,8 @@
     "mysql2": "^2.3.3",
     "sequelize": "^6.26.0",
     "sequelize-cli-typescript": "^3.2.0-c",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^4.6.3",
     "tslib": "^2.5.0"
   }
 }

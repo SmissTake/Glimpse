@@ -26,10 +26,33 @@ if(process.env.NODE_ENV !== 'production'){
     console.log('Le token JWT :', generateToken(1, "User1", "user-1@gmail.com", "Administrateur"));
 }
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerJSDoc = require('swagger-jsdoc');
+
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'API de l\'application mobile Glimpse',
+            version: '1.0.0',
+            description: 'Glimpse est une application mobile d\'exploration urbaine',
+        },
+        servers: [
+            {
+                url: `http://localhost:${PORT}`,
+                description: 'Serveur de développement'
+            },
+        ],
+    },
+    apis: ['./src/routes/*.ts'],
+};
+
+const swaggerDocs = swaggerJSDoc(swaggerOptions);
 
 
 app.use(cors())
 app.use(express.json());
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.get('/place/show/:id', routerPlace);
 app.get('/place/listall', routerPlace);
