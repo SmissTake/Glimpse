@@ -18,7 +18,7 @@ export class UserController extends CrudController{
                 {
                     model: Place,
                     as: 'FavoritePlaces',
-                    attributes: ['id', 'title', 'created_at'],
+                    attributes: ['id', 'title', 'town', 'created_at'],
                     include: [
                         {
                             model: PicturePlace,
@@ -27,7 +27,8 @@ export class UserController extends CrudController{
                         },
                         {
                             model: Category,
-                            attributes: ['label']
+                            attributes: ['label', 'avatar'],
+                   	    where: { is_active: true },
                         },
                         {
                             model: Accessibility,
@@ -40,7 +41,7 @@ export class UserController extends CrudController{
                 {
                     model: Place,
                     as: 'posted',
-                    attributes: ['id', 'title', 'created_at'],
+                    attributes: ['id', 'title', 'town', 'created_at'],
                     include: [
                         {
                             model: PicturePlace,
@@ -49,7 +50,8 @@ export class UserController extends CrudController{
                         },
                         {
                             model: Category,
-                            attributes: ['label']
+                            attributes: ['label', 'avatar'],
+                   	    where: { is_active: true },
                         },
                         {
                             model: Accessibility,
@@ -62,7 +64,7 @@ export class UserController extends CrudController{
                 {
                     model: Place,
                     as: 'Visited',
-                    attributes: ['id', 'title', 'created_at'],
+                    attributes: ['id', 'title', 'town', 'created_at'],
                     include: [
                         {
                             model: PicturePlace,
@@ -71,7 +73,8 @@ export class UserController extends CrudController{
                         },
                         {
                             model: Category,
-                            attributes: ['label']
+                            attributes: ['label', 'avatar'],
+                   	        where: { is_active: true },
                         },
                         {
                             model: Accessibility,
