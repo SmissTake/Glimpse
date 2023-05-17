@@ -4,169 +4,229 @@ import * as Auth from '../middleware/authenticate';
 
 /**
  * @swagger
- * swagger: '2.0'
- * info:
- *   title: Place API
- *   description: API pour gérer les lieux
- *   version: 1.0.0
- * basePath: /
- * schemes:
- *   - http
- * consumes:
- *   - application/json
- * produces:
- *   - application/json
+ * tags:
+ *   name: Places
+ *   description: API for managing places
  * 
- * definitions:
- *   Place:
- *     type: object
- *     properties:
- *       id:
- *         type: integer
- *         format: int64
- *       title:
- *         type: string
- *       description:
- *         type: string
- *       history:
- *         type: string
- *       town:
- *         type: string
- *       is_active:
- *         type: boolean
- *       keyword:
- *         type: string
- *       categoriesId:
- *         type: integer
- *       accessibilitiesId:
- *         type: integer
- *       usersId:
- *         type: integer
- *       created_at:
- *         type: string
- *         format: date-time
+ * components:
+ *   schemas:
+ *     Place:
+ *       type: object
+ *       required:
+ *         - title
+ *         - description
+ *         - town
+ *         - latitude
+ *         - longitude
+ *         - accessibility_id
+ *         - category_id
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: The auto-generated id of the place
+ *         title:
+ *           type: string
+ *           description: The title of the place
+ *         description:
+ *           type: string
+ *           description: The description of the place
+ *         town:
+ *           type: string
+ *           description: The town of the place
+ *         latitude:
+ *           type: number
+ *           description: The latitude of the place
+ *         longitude:
+ *           type: number
+ *           description: The longitude of the place
+ *         accessibility_id:
+ *           type: integer
+ *           description: The id of the accessibility of the place
+ *         category_id:
+ *           type: integer
+ *           description: The id of the category of the place
+ *         created_at:
+ *           type: string
+ *           format: date-time
+ *           description: The date and time the place was created
+ *         updated_at:
+ *           type: string
+ *           format: date-time
+ *           description: The date and time the place was last updated
+ *         is_active:
+ *           type: boolean
+ *           description: Whether the place is active or not
+ *       example:
+ *         title: Place Title
+ *         description: Place Description
+ *         town: Place Town
+ *         latitude: 123.456
+ *         longitude: 123.456
+ *         accessibility_id: 1
+ *         category_id: 1
+ *         created_at: 2022-01-01T00:00:00.000Z
+ *         updated_at: 2022-01-01T00:00:00.000Z
+ *         is_active: true
  * 
- *   PlaceList:
- *     type: array
- *     items:
- *       $ref: '#/definitions/Place'
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  * 
- *   PlaceInput:
- *     type: object
- *     properties:
- *       title:
- *         type: string
- *       description:
- *         type: string
- *       history:
- *         type: string
- *       town:
- *         type: string
- *       keyword:
- *         type: string
- *       categoriesId:
- *         type: integer
- *       accessibilitiesId:
- *         type: integer
+ * /place/show/{id}:
+ *   get:
+ *     summary: Get a place by id
+ *     tags: [Places]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The id of the place to retrieve
+ *     responses:
+ *       200:
+ *         description: The place with the specified id
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Place'
+ *       404:
+ *         description: The place with the specified id was not found
  * 
- *   PlaceUpdate:
- *     type: object
- *     properties:
- *       title:
- *         type: string
- *       description:
- *         type: string
- *       history:
- *         type: string
- *       town:
- *         type: string
- *       keyword:
- *         type: string
- *       categoriesId:
- *         type: integer
- *       accessibilitiesId:
- *         type: integer
+ * /place/update/{id}:
+ *   put:
+ *     summary: Update a place by id
+ *     tags: [Places]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The id of the place to update
+ *       - in: body
+ *         name: place
+ *         description: The place to update
+ *         schema:
+ *           $ref: '#/components/schemas/Place'
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: The updated place
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Place'
+ *       400:
+ *         description: Invalid request body
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: The place with the specified id was not found
  * 
- *   Error:
- *     type: object
- *     properties:
- *       message:
- *         type: string
- *       code:
- *         type: integer
+ * /place/delete/{id}:
+ *   delete:
+ *     summary: Delete a place by id
+ *     tags: [Places]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: The id of the place to delete
+ *     responses:
+ *       200:
+ *         description: The place was deleted
+ *       403:
+ *         description: Forbidden
+ *       404:
+ *         description: The place with the specified id was not found
  * 
- *   Count:
- *     type: object
- *     properties:
- *       count:
- *         type: integer
+ * /place/listall:
+ *   get:
+ *     summary: Get all places
+ *     tags: [Places]
+ *     responses:
+ *       200:
+ *         description: All places
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Place'
  * 
- * parameters:
- *   id:
- *     name: id
- *     in: path
- *     description: L'ID du lieu
- *     required: true
- *     type: integer
- *   page:
- *     name: page
- *     in: query
- *     description: Le numéro de la page à récupérer
- *     required: false
- *     type: integer
- *     default: 1
- *   limit:
- *     name: limit
- *     in: query
- *     description: Le nombre d'éléments par page
- *     required: false
- *     type: integer
- *     default: 10
- * 
- * securityDefinitions:
- *   Bearer:
- *     type: apiKey
- *     name: Authorization
- *     in: header
- * 
- * paths:
- *   /place/show/{id}:
- *     get:
- *       tags:
- *         - Place
- *       description: Récupérer un lieu spécifique
- *       produces:
- *         - application/json
- *       parameters:
- *         - $ref: '#/parameters/id'
- *       responses:
- *         200:
- *           description: Le lieu a été récupéré avec succès
+ * /place/create:
+ *   post:
+ *     summary: Create a new place
+ *     tags: [Places]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       description: The place to create
+ *       required: true
+ *       content:
+ *         application/json:
  *           schema:
- *             $ref: '#/definitions/Place'
- *         404:
- *           description: Le lieu n'a pas été trouvé
+ *             $ref: '#/components/schemas/Place'
+ *     responses:
+ *       200:
+ *         description: The created place
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Place'
+ *       400:
+ *         description: Invalid request body
+ *       500:
+ *         description: Error creating place
+ * 
+ * /place/search:
+ *   post:
+ *     summary: Search for places
+ *     tags: [Places]
+ *     requestBody:
+ *       description: The search query, limit, and offset
+ *       required: true
+ *       content:
+ *         application/json:
  *           schema:
- *             $ref: '#/definitions/Error'
- *   /place/listall:
- *     get:
- *       tags:
- *         - Place
- *       description: Récupérer tous les lieux
- *       produces:
- *         - application/json
- *       parameters:
- *         - $ref: '#/parameters/page'
- *         - $ref: '#/parameters/limit'
- *       responses:
- *         200:
- *           description: Les lieux ont été récupérés avec succès
- *           schema:
- *             $ref: '#/definitions/PlaceList'
- *         404:
- *           description: Aucun lieu n'a été trouvé
+ *             type: object
+ *             properties:
+ *               query:
+ *                 type: string
+ *                 description: The search query
+ *               limit:
+ *                 type: integer
+ *                 description: The maximum number of places to return
+ *               offset:
+ *                 type: integer
+ *                 description: The number of places to skip before returning results
+ *             example:
+ *               query: "place"
+ *               limit: 10
+ *               offset: 0
+ *     responses:
+ *       200:
+ *         description: The search results
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Place'
+ *       400:
+ *         description: Invalid request body
+ *       500:
+ *         description: Error searching places
  */
-
 const placeController = new PlaceController();
 
 export const routerPlace = express.Router({
