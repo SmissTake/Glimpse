@@ -16,57 +16,173 @@ import * as Auth from '../middleware/authenticate';
  *         - title
  *         - description
  *         - town
- *         - latitude
- *         - longitude
  *         - accessibility_id
  *         - category_id
  *       properties:
- *         id:
- *           type: integer
- *           description: The auto-generated id of the place
- *         title:
- *           type: string
- *           description: The title of the place
- *         description:
- *           type: string
- *           description: The description of the place
- *         town:
- *           type: string
- *           description: The town of the place
- *         latitude:
- *           type: number
- *           description: The latitude of the place
- *         longitude:
- *           type: number
- *           description: The longitude of the place
- *         accessibility_id:
- *           type: integer
- *           description: The id of the accessibility of the place
- *         category_id:
- *           type: integer
- *           description: The id of the category of the place
- *         created_at:
- *           type: string
- *           format: date-time
- *           description: The date and time the place was created
- *         updated_at:
- *           type: string
- *           format: date-time
- *           description: The date and time the place was last updated
- *         is_active:
- *           type: boolean
- *           description: Whether the place is active or not
+ *           id:
+ *             type: integer
+ *             description: The auto-generated id of the place
+ *           title:
+ *             type: string
+ *             description: The title of the place
+ *           description:
+ *             type: string
+ *             description: The description of the place
+ *           history:
+ *             type: string
+ *             description: The history of the place
+ *           town:
+ *             type: string
+ *             description: The town of the place
+ *           is_active:
+ *             type: boolean
+ *             description: Whether the place is active or not
+ *           keyword:
+ *             type: string
+ *             description: The keywords associated with the place
+ *           categoriesId:
+ *             type: integer
+ *             description: The ID of the category associated with the place
+ *           accessibilitiesId:
+ *             type: integer
+ *             description: The ID of the accessibility associated with the place
+ *           usersId:
+ *             type: integer
+ *             description: The ID of the user who posted the place
+ *           created_at:
+ *             type: string
+ *             format: date-time
+ *             description: The date and time the place was created
+ *           PicturePlaces:
+ *             type: array
+ *             items:
+ *               type: object
+ *               properties:
+ *                 url:
+ *                   type: string
+ *                   description: The URL of the picture associated with the place
+ *           postedBy:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: integer
+ *                 description: The ID of the user who posted the place
+ *               pseudonym:
+ *                 type: string
+ *                 description: The pseudonym of the user who posted the place
+ *               avatar:
+ *                 type: string
+ *                 description: The URL of the avatar of the user who posted the place
+ *           Category:
+ *             type: object
+ *             properties:
+ *               label:
+ *                 type: string
+ *                 description: The label of the category associated with the place
+ *           Accessibility:
+ *             type: object
+ *             properties:
+ *               label:
+ *                 type: string
+ *                 description: The label of the accessibility associated with the place
+ *           Comments:
+ *             type: array
+ *             items:
+ *               type: object
+ *               properties:
+ *                 comment:
+ *                   type: string
+ *                   description: The comment associated with the place
+ *                 created_at:
+ *                   type: string
+ *                   format: date-time
+ *                   description: The date and time the comment was created
+ *                 PictureComments:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       url:
+ *                         type: string
+ *                         description: The URL of the picture associated with the comment
+ *                 postedBy:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                       description: The ID of the user who posted the comment
+ *                     pseudonym:
+ *                       type: string
+ *                       description: The pseudonym of the user who posted the comment
+ *                     avatar:
+ *                       type: string
+ *                       description: The URL of the avatar of the user who posted the comment
+ *           FavoriteUsers:
+ *             type: array
+ *             items:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   description: The ID of the favorite
+ *                 Favorite:
+ *                   type: object
+ *                   properties:
+ *                     usersId:
+ *                       type: integer
+ *                       description: The ID of the user who favorited the place
+ *                     placesId:
+ *                       type: integer
+ *                       description: The ID of the place that was favorited
  *       example:
- *         title: Place Title
- *         description: Place Description
- *         town: Place Town
- *         latitude: 123.456
- *         longitude: 123.456
- *         accessibility_id: 1
- *         category_id: 1
- *         created_at: 2022-01-01T00:00:00.000Z
- *         updated_at: 2022-01-01T00:00:00.000Z
+ *         title: Fonderie Abandonnee
+ *         description: Fonderie Abandonnée dans les alentours de Rennes. Lieu agréable mais protégé et parfois dangereux
+ *         history: Histoire de la fonderie
+ *         town: Rennes
  *         is_active: true
+ *         keyword: fonderie, abandonnée, Rennes
+ *         categoriesId: 1
+ *         accessibilitiesId: 2
+ *         usersId: 1
+ *         created_at: 2022-12-06T10:23:01.000Z
+ *         PicturePlaces:
+ *           - url: https://example.com/place1.jpg
+ *           - url: https://example.com/place2.jpg
+ *         postedBy:
+ *           id: 1
+ *           pseudonym: JohnDoe
+ *           avatar: https://example.com/avatar.jpg
+ *         Category:
+ *           label: Abandoned places
+ *         Accessibility:
+ *           label: Difficult access
+ *         Comments:
+ *           - comment: This place is amazing!
+ *             created_at: 2022-12-07T10:23:01.000Z
+ *             PictureComments:
+ *               - url: https://example.com/comment1.jpg
+ *               - url: https://example.com/comment2.jpg
+ *             postedBy:
+ *               id: 2
+ *               pseudonym: JaneDoe
+ *               avatar: https://example.com/avatar2.jpg
+ *           - comment: I've been there too, it's really cool!
+ *             created_at: 2022-12-08T10:23:01.000Z
+ *             PictureComments:
+ *               - url: https://example.com/comment3.jpg
+ *             postedBy:
+ *               id: 3
+ *               pseudonym: BobSmith
+ *               avatar: https://example.com/avatar3.jpg
+ *         FavoriteUsers:
+ *           - id: 1
+ *             Favorite:
+ *               usersId: 2
+ *               placesId: 1
+ *           - id: 2
+ *             Favorite:
+ *               usersId: 3
+ *               placesId: 1
  * 
  *   securitySchemes:
  *     bearerAuth:
