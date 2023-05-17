@@ -68,7 +68,7 @@ export class PlaceController extends CrudController{
     // Get id, title, created_at, pictures, user id and pseudonym, category label, accessibility label of all places
     public listAll(req: Request, res: Response): void{
         Place.findAll({ 
-            attributes: ['id', 'title', 'created_at'],
+            attributes: ['id', 'title', 'town', 'created_at'],
             include: [
                 {
                     model: PicturePlace,
@@ -81,7 +81,7 @@ export class PlaceController extends CrudController{
                 },
                 {
                     model: Category,
-                    attributes: ['label'],
+                    attributes: ['label', 'avatar'],
                     where: { is_active: true },
                 },
                 {
