@@ -305,7 +305,7 @@ import * as Auth from '../middleware/authenticate';
  *         description: Error creating place
  * 
  * /place/search:
- *   post:
+ *   get:
  *     summary: Search for places
  *     tags: [Places]
  *     requestBody:
