@@ -5,6 +5,7 @@ import { BCRYPT_ROUND } from "../config/constants";
 import { Permission } from "../models/Permission";
 import { User } from "../models/User";
 import { CrudController } from "./CrudController";
+import { Request, Response } from 'express';
 
 export class AuthenticateController extends CrudController {
 
