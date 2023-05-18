@@ -53,6 +53,8 @@ const options = {
   };
   
   // create a new session store with the options
+  // ↓ ignore error : 'new' expression, whose target lacks a construct signature, implicitly has an 'any' type.
+  // @ts-ignore
   const sessionStore = new MySQLStore(options);
 
 export const routerAdmin = AdminJSExpress.buildAuthenticatedRouter(
