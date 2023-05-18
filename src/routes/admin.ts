@@ -22,6 +22,11 @@ AdminJS.registerAdapter({
 
 const admin = new AdminJS({
   resources: [Category, Place, User, PicturePlace, Comment, PictureComment, Accessibility, Permission, Favorite, Follow, Visite],
+  branding: {
+    companyName: 'Glimpse',
+    favicon: '../uploads/favicon.ico',
+    logo: '../uploads/admin-logo.png',
+  },
 })
 
 const DEFAULT_ADMIN = {
@@ -67,7 +72,7 @@ export const routerAdmin = AdminJSExpress.buildAuthenticatedRouter(
         httpOnly: process.env.NODE_ENV === 'production',
         secure: process.env.NODE_ENV === 'production',
       },
-      name: 'adminjs',
+      name: 'Glimpse',
     }
 );
 
