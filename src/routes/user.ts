@@ -48,6 +48,12 @@ export const routerUser = express.Router({
  *         mail: "johndoe@example.com"
  *         biography: "I'm a software developer"
  *         avatar: "https://example.com/avatar.png"
+ *
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  * 
  * /user/show/{id}:
  *   get:
@@ -74,6 +80,8 @@ export const routerUser = express.Router({
  *   put:
  *     summary: Update a user by ID
  *     tags: [User]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -91,6 +99,8 @@ export const routerUser = express.Router({
  *     responses:
  *       200:
  *         description: User updated successfully
+ *       401:
+ *        description: Unauthorized
  *       404:
  *         description: User not found
  * 
