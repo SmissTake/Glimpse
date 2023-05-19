@@ -49,7 +49,6 @@ export function validateToken(token: string): Promise<TokenPayload> {
 
     return new Promise(function (resolve, reject) {
         verify(token, publicKey, (error, decoded) => {
-            console.log('decode', decoded);
             if (error) {
                 return reject(error);
             }
