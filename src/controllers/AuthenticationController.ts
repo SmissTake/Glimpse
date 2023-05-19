@@ -1,6 +1,6 @@
 import { compare, hash } from "bcrypt";
 import status from "http-status";
-import { generateToken } from "../authenticate/jwt";
+import { generateToken, validateToken } from "../authenticate/jwt";
 import { BCRYPT_ROUND } from "../config/constants";
 import { Permission } from "../models/Permission";
 import { User } from "../models/User";
@@ -67,6 +67,27 @@ export class AuthenticateController extends CrudController {
                 'id':user.id,
                 'token':generateToken(user.id, user.pseudonym, user.mail, permission.role)
             });
+        }
+    }
+
+    public verifyToken(req: Request, res: Response){
+        const token = req.headers.authorization?.split(' ')[1];
+
+        if (!token) {
+            return res.status(401).json({ message: 'No token provided' });
+        }
+
+        try {
+            validateToken(token)
+                .then(decoded => {
+                    return res.status(200).json({ message: 'Token is valid' });
+                })
+                .catch(err => {
+                    return res.status(401).json({ message: 'Invalid token' });
+                }
+            );
+        } catch (err) {
+            return res.status(401).json({ message: 'Invalid token' });
         }
     }
 }

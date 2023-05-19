@@ -90,6 +90,7 @@ app.use('/admin', routerAdmin);
 
 app.post('/user/signin', routerAuthenticate);
 app.post('/user/login', routerAuthenticate);
+app.get('/user/verify', routerAuthenticate);
 
 app.use('/uploads', express.static('uploads'));
 
