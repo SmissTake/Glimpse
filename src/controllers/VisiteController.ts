@@ -22,13 +22,23 @@ export class VisiteController extends CrudController {
     }
 
     public delete(req: Request, res: Response): void {
-        Visite.destroy({
-            where: {
-                usersId: req.body.usersId,
-                placesId: req.body.placesId
-            }
+        const token = req.headers.authorization?.split(' ')[1];
+        validateToken(token!)
+        .then(decoded => {
+            const usersId = decoded.usersId;
+            const placesId = req.body.placesId;
+            Visite.destroy({
+                where: {
+                    usersId: usersId,
+                    placesId: placesId
+                }
+            })
+            .then((visite) => res.json(visite))
+            .catch((err) => res.status(500).json(err));
         })
-        .then((visite) => res.json(visite))
-        .catch((err) => res.status(500).json(err));
+        .catch(error => {
+            console.log(error);
+            res.status(500).json({message: "Error unliking place"});
+        });
     }
 }
