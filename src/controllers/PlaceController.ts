@@ -56,6 +56,11 @@ export class PlaceController extends CrudController{
                     as: 'FavoriteUsers',
                     attributes: ['id']
                 },
+                {
+                    model: User,
+                    as: 'VisiteUsers',
+                    attributes: ['id']
+                }
             ],
         })
         .then((place) => res.json(place))
