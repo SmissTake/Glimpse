@@ -29,13 +29,28 @@ export class FollowController extends CrudController {
     }
 
     public delete(req: Request, res: Response): void {
-        Follow.destroy({
-            where: {
-                followerId: req.body.followerId,
-                followingId: req.body.followingId
+        const token = req.headers.authorization?.split(' ')[1];
+        validateToken(token!)
+        .then(decoded => {
+            const followerId = decoded.usersId;
+            if (!req.body.followingId) {
+                res.status(400).json({ error: "Missing followingId in request body" });
+            }
+            else {
+                const followingId = req.body.followingId;
+                Follow.destroy({
+                    where: {
+                        followerId: followerId,
+                        followingId: followingId
+                    }
+                })
+                .then((follow) => res.json(follow))
+                .catch((err) => res.status(500).json(err));
             }
         })
-        .then((follow) => res.json(follow))
-        .catch((err) => res.status(500).json(err));
+        .catch(error => {
+            console.log(error);
+            res.status(500).json({message: "Error unfollowing user"});
+        });
     }
 }
