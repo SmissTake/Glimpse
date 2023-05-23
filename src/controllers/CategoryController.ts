@@ -12,6 +12,7 @@ export class CategoryController extends CrudController {
     public listAll(req: Request, res: Response): void {
         Category.findAll({
             attributes: [
+                'id',
                 'label',
                 'avatar',
                 [sequelize.fn('COUNT', sequelize.col('Place.id')), 'numberPlaces'],
